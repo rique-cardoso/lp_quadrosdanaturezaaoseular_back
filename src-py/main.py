@@ -37,6 +37,9 @@ def send_whatsapp_message(phone, message, image_url=None):
             "4. Premium em Acrílico e Caixa com Vidro\n\n"
             "Responda com o número correspondente à sua escolha."
         )
+        endpoint = f"{EVOLUTION_API_URL}/message/sendMedia/quadrosdanaturezaaoseular"
+    else:
+        endpoint = f"{EVOLUTION_API_URL}/sendText/quadrosdanaturezaaoseular"
     
     headers = {
         "apikey": API_KEY,
