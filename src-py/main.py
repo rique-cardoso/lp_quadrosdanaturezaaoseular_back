@@ -22,6 +22,8 @@ def send_whatsapp_message(phone, message, image_url=None):
         "number": phone,
         "text": message
     }
+
+    endpoint = ""
     
     if image_url:
         payload["media"] = image_url
@@ -46,7 +48,7 @@ def send_whatsapp_message(phone, message, image_url=None):
         "Content-Type": "application/json"
     }
     
-    response = requests.post(EVOLUTION_API_URL, json=payload, headers=headers)
+    response = requests.post(endpoint, json=payload, headers=headers)
     return response.json()
 
 @app.route('/send-message', methods=['POST'])
