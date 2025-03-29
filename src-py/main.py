@@ -13,7 +13,7 @@ load_dotenv()
 EVOLUTION_API_URL = os.getenv("EVOLUTION_API_URL")
 API_KEY = os.getenv("API_KEY")
 
-def send_whatsapp_message(phone, message, image_url=None, buttons=None):
+def send_whatsapp_message(phone, message, image_url=None):
     """
     Envia uma mensagem via Evolution API.
     Se houver imagem, ela será enviada junto.
@@ -24,10 +24,19 @@ def send_whatsapp_message(phone, message, image_url=None, buttons=None):
     }
     
     if image_url:
-        payload["image"] = image_url
-    
-    if buttons:
-        payload["buttons"] = buttons
+        payload["media"] = image_url
+        payload["mediatype"] = "image"
+        payload["mimetype"] = "image/png"
+        payload["fileName"] = "quadro_selecionado.png"
+        payload["caption"] = (
+            "Olá, Ana Luíza, tudo bem? Seu cupom de 15% de desconto está garantido no produto selecionado!\n\n"
+            "Escolha abaixo o Tipo de Impressão e Acabamento que você deseja para o quadro:\n\n"
+            "1. Tela Canvas e Canaleta Flutuante\n"
+            "2. Tela Canvas e Caixa sem Vidro\n"
+            "3. Premium em Acrílico e Caixa sem Vidro\n"
+            "4. Premium em Acrílico e Caixa com Vidro\n\n"
+            "Responda com o número correspondente à sua escolha."
+        )
     
     headers = {
         "apikey": API_KEY,
@@ -53,13 +62,7 @@ def send_message():
             message = (f"Olá, {name}, tudo bem?\n\n"
                        "Seu cupom de 15% de desconto está garantido no produto selecionado! "
                        "Escolha abaixo o Tipo de Impressão e Acabamento que você deseja para o quadro:")
-            buttons = [
-                "Tela Canvas e Canaleta Flutuante",
-                "Tela Canvas e Caixa sem Vidro",
-                "Premium em Acrílico e Caixa sem Vidro",
-                "Premium em Acrílico e Caixa com Vidro"
-            ]
-            response = send_whatsapp_message(phone, message, image_url=product_image, buttons=buttons)
+            response = send_whatsapp_message(phone, message, image_url=product_image)
         else:
             message = (f"Olá, {name}, tudo bem?\n\n"
                        "Seu cupom de 15% de desconto está garantido! Para utilizá-lo, basta enviar um print "
