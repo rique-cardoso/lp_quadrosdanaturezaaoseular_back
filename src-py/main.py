@@ -13,6 +13,7 @@ load_dotenv()
 EVOLUTION_API_URL = os.getenv("EVOLUTION_API_URL")
 API_KEY = os.getenv("API_KEY")
 INSTANCE_NAME = os.getenv("INSTANCE_NAME")
+SHEETS_URL = os.getenv("SHEETS_URL")
 
 def send_whatsapp_message(phone, message, image_url=None):
     """
@@ -61,6 +62,46 @@ def send_whatsapp_message(phone, message, image_url=None):
     
     response = requests.post(endpoint, json=payload, headers=headers)
     return response.json()
+
+@app.route('/register-lead', methods=['POST'])
+def register_lead():
+    try:
+        data = request.get_json()
+        
+        if not data or 'phone' not in data or 'name' not in data:
+            return jsonify({"error": "Número e nome são obrigatórios"}), 400
+        
+        phone = data['phone']
+        name = data['name']
+        product_image = data.get('productImage', '') # Usa valor padrão vazio se não houver productImage
+
+        payload = {
+            "phone": phone,
+            "name": name,
+            "productImage": product_image
+        }
+
+        response = requests.post(SHEETS_URL, json=payload) # Envia os dados para o Google Apps Script
+
+        # Verificar se a requisição foi bem-sucedida
+        if response.status_code == 200:
+            response_data = response.json()
+            if response_data.get('status') == 'success':
+                return jsonify({"status": "success", "message": "Lead registrado no Google Sheets"}), 200
+            else:
+                return jsonify({"error": "Erro ao registrar no Google Sheets"}), 500
+        else:
+            return jsonify({"error": f"Erro na requisição ao Google Sheets: {response.status_code}"}), 500
+    
+    except Exception as e:
+
+        return jsonify({"error": f"Erro interno: {str(e)}"}), 500
+
+
+
+
+
+
 
 @app.route('/send-message', methods=['POST'])
 def send_message():
