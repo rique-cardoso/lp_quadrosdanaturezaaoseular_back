@@ -41,7 +41,7 @@ def send_whatsapp_message(phone, message, image_url=None):
         )
         endpoint = f"{EVOLUTION_API_URL}/message/sendMedia/quadrosdanaturezaaoseular"
     else:
-        endpoint = f"{EVOLUTION_API_URL}/sendText/quadrosdanaturezaaoseular"
+        endpoint = f"{EVOLUTION_API_URL}/message/sendText/quadrosdanaturezaaoseular"
     
     headers = {
         "apikey": API_KEY,
