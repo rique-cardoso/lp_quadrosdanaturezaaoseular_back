@@ -7,7 +7,8 @@ import os
 app = Flask(__name__)
 CORS(app, resources={
     r"/send-message": {"origins": "https://nexxomi.github.io"},
-    r"/register-lead": {"origins": "https://nexxomi.github.io"}
+    r"/register-lead": {"origins": "https://nexxomi.github.io"},
+    r"/health-check": {"origins": "https://https://arthurrabel.github.io"},
 })
 
 load_dotenv()
@@ -66,8 +67,8 @@ def send_whatsapp_message(phone, message, image_url=None):
     response = requests.post(endpoint, json=payload, headers=headers)
     return response.json()
 
-@app.route('/health-chek', methods=['GET'])
-def health_chek():
+@app.route('/health-check', methods=['GET'])
+def health_check():
     return jsonify({"status": "OK"}), 200
 
 @app.route('/register-lead', methods=['POST'])
