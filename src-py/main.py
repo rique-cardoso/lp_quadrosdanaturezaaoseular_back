@@ -66,6 +66,10 @@ def send_whatsapp_message(phone, message, image_url=None):
     response = requests.post(endpoint, json=payload, headers=headers)
     return response.json()
 
+@app.route('/health-chek', methods=['GET'])
+def health_chek():
+    return jsonify({"status": "OK"}), 200
+
 @app.route('/register-lead', methods=['POST'])
 def register_lead():
     try:
