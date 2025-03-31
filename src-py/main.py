@@ -5,7 +5,10 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/send-message": {"origins": "https://nexxomi.github.io"}})
+CORS(app, resources={
+    r"/send-message": {"origins": "https://nexxomi.github.io"},
+    r"/register-lead": {"origins": "https://nexxomi.github.io"}
+})
 
 load_dotenv()
 
