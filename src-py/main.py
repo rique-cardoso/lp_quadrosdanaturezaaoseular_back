@@ -87,7 +87,7 @@ def send_message():
         else:
             message = (f"Olá, {name}, tudo bem?\n\n"
                        "Seu cupom de 15% de desconto está garantido! Para utilizá-lo, basta enviar um print "
-                       "ou uma foto do quadro que você deseja adquirir e escolher uma das opções de impressão abaixo:"
+                       "ou uma foto do quadro que você deseja adquirir e escolher uma das opções de impressão abaixo:\n\n"
                        "1. Tela Canvas e Canaleta Flutuante\n"
                         "2. Tela Canvas e Caixa sem Vidro\n"
                         "3. Premium em Acrílico e Caixa sem Vidro\n"
