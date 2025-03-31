@@ -12,21 +12,22 @@ load_dotenv()
 # Configuração da Evolution API
 EVOLUTION_API_URL = os.getenv("EVOLUTION_API_URL")
 API_KEY = os.getenv("API_KEY")
+INSTANCE_NAME = os.getenv("INSTANCE_NAME")
 
 def send_whatsapp_message(phone, message, image_url=None):
     """
     Envia uma mensagem via Evolution API.
     Se houver imagem, ela será enviada junto.
     """
-    payload = {
+    """ payload = {
         "number": phone,
         "text": message
-    }
-
+    } """
+    payload = {}
     endpoint = ""
     
     if image_url:
-        payload["media"] = image_url
+        """ payload["media"] = image_url
         payload["mediatype"] = "image"
         payload["mimetype"] = "image/png"
         payload["fileName"] = "quadro_selecionado.png"
@@ -38,10 +39,20 @@ def send_whatsapp_message(phone, message, image_url=None):
             "3. Premium em Acrílico e Caixa sem Vidro\n"
             "4. Premium em Acrílico e Caixa com Vidro\n\n"
             "Responda com o número correspondente à sua escolha."
-        )
-        endpoint = f"{EVOLUTION_API_URL}/message/sendMedia/quadrosdanaturezaaoseular"
+        ) """
+
+        payload["number"] = phone
+        payload["mediatype"] = "image"
+        payload["mimetype"] = "image/png"
+        payload["caption"] = message
+        payload["media"] = image_url
+        payload["fileName"] = "quadro_selecionado.png"
+
+        endpoint = f"{EVOLUTION_API_URL}/message/sendMedia/{INSTANCE_NAME}"
     else:
-        endpoint = f"{EVOLUTION_API_URL}/message/sendText/quadrosdanaturezaaoseular"
+        payload["number"] = phone
+        payload["text"] = message
+        endpoint = f"{EVOLUTION_API_URL}/message/sendText/{INSTANCE_NAME}"
     
     headers = {
         "apikey": API_KEY,
@@ -65,13 +76,23 @@ def send_message():
 
         if product_image:
             message = (f"Olá, {name}, tudo bem?\n\n"
-                       "Seu cupom de 15% de desconto está garantido no produto selecionado! "
-                       "Escolha abaixo o Tipo de Impressão e Acabamento que você deseja para o quadro:")
+                       "Seu cupom de 15% de desconto está garantido no produto selecionado!\n\n"
+                       "Escolha abaixo o Tipo de Impressão e Acabamento que você deseja para o quadro:\n\n"
+                       "1. Tela Canvas e Canaleta Flutuante\n"
+                        "2. Tela Canvas e Caixa sem Vidro\n"
+                        "3. Premium em Acrílico e Caixa sem Vidro\n"
+                        "4. Premium em Acrílico e Caixa com Vidro\n\n"
+                        "Responda com o número correspondente à sua escolha.")
             response = send_whatsapp_message(phone, message, image_url=product_image)
         else:
             message = (f"Olá, {name}, tudo bem?\n\n"
                        "Seu cupom de 15% de desconto está garantido! Para utilizá-lo, basta enviar um print "
-                       "ou uma foto do quadro que você deseja adquirir e escolher uma das opções de impressão abaixo:")
+                       "ou uma foto do quadro que você deseja adquirir e escolher uma das opções de impressão abaixo:"
+                       "1. Tela Canvas e Canaleta Flutuante\n"
+                        "2. Tela Canvas e Caixa sem Vidro\n"
+                        "3. Premium em Acrílico e Caixa sem Vidro\n"
+                        "4. Premium em Acrílico e Caixa com Vidro\n\n"
+                        "Responda com o número correspondente à sua escolha.")
             response = send_whatsapp_message(phone, message)
 
         return jsonify({"status": "success", "evolution_api_response": response}), 200
