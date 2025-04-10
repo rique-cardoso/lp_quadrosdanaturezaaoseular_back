@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/send-message": {"origins": "https://nexxomi.github.io"},
     r"/register-lead": {"origins": "https://nexxomi.github.io"},
-    r"/health-check": {"origins": "https://https://arthurrabel.github.io"},
+    r"/health-check": {"origins": "https://dashboard.uptimerobot.com"},
 })
 
 load_dotenv()
@@ -126,7 +126,7 @@ def send_message():
         if product_image:
             message = (f"Olá, {name}, tudo bem?\n\n"
                        "Seu cupom de 15% de desconto está garantido no produto selecionado!\n\n"
-                       "Escolha abaixo o Tipo de Impressão e Acabamento que você deseja para o quadro:\n\n"
+                       "Acesse nossa loja em quadrosdanaturezaaoseular.com.br e insira o cupom *LPOFF15*\n\n"
                        "1. Tela Canvas e Canaleta Flutuante\n"
                         "2. Tela Canvas e Caixa sem Vidro\n"
                         "3. Premium em Acrílico e Caixa sem Vidro\n"
